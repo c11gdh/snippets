@@ -13,6 +13,9 @@ const downloadBlobImage = async (baseUrl = "", fileId = "", fileName = "") => {
     // 建立圖片物件位置(存在瀏覽器記憶體中)
     const url = URL.createObjectURL(blob);
 
+    // 從瀏覽器網址下載
+    // window.open(url)
+
     // 模擬檔案下載
     const aTag = document.createElement("a");
     aTag.href = url;
