@@ -1,4 +1,7 @@
 // 傳統 Form Submit
+/**
+ * 傳統 Form Data 送出會刷新至目標網站做請求 不會跨域
+ */
 const useFormSubmit = (actionUrl = "", data = {}) => {
   const formElement = document.createElement("form");
   formElement.action = actionUrl;
