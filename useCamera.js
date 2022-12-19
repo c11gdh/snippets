@@ -6,7 +6,6 @@ export default function App() {
   const videoRef = useRef();
   const timer = useRef();
   const isMounted = useRef();
-  const streamTracks = useRef();
   const canvasElementRef = useRef(document.createElement('canvas'));
   const canvasRef = useRef(canvasElementRef.current.getContext('2d'));
 
@@ -25,7 +24,6 @@ export default function App() {
     navigator.mediaDevices
       .getUserMedia({ video: { facingMode: 'environment' } })
       .then((stream) => {
-        streamTracks.current = stream;
         videoRef.current.srcObject = stream;
         videoRef.current.onloadedmetadata = () => {
           videoRef.current.play();
@@ -39,12 +37,10 @@ export default function App() {
     let code = jsQR(imageData.data, imageData.width, imageData.height);
     if (code && code.data) {
       console.log(code);
-      streamTracks.current.getTracks().forEach((track) => {
-        track.stop();
-      });
+      closeCamera();
       clearTimeout(timer.current);
     } else {
-      console.log(timer.current);
+      // console.log(timer.current);
       // timer.current = window.requestAnimationFrame(() => tick());
       timer.current = setTimeout(tick, 1e3);
     }
@@ -67,6 +63,14 @@ export default function App() {
       canvasElementRef.current.height
     );
     useQrCode(imageData);
+  };
+
+  const closeCamera = () => {
+    const { srcObject } = videoRef.current;
+    srcObject.getTracks().forEach((track) => {
+      track.stop();
+      videoRef.current.srcObject = null;
+    });
   };
 
   return (
